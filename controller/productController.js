@@ -17,7 +17,7 @@ const deleteProductById = async (req, res) => {
   return res.json(data);
 }
 const updateProductById = async (req, res) => {
-  const data = await ProductModel.findByIdAndUpdate(req.body.id, req.body.data);
+  const data = await ProductModel.findByIdAndUpdate(req.body._id, req.body);
   return res.json(data);
 }
 

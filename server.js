@@ -1,16 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const db = require('./utils/database');
+const cors = require('cors');
 const { getAllUsers, getUserById, addNewUser, deleteUserById, updateUserById } = require('./controller/userController');
 const { getAllTrucks, getTruckById, addNewTruck, deleteTruckById, updateTruckById } = require('./controller/truckController');
 const { getAllTrackRecords, getTrackRecordById, addNewTrackRecord, deleteTrackRecordById, updateTrackRecordById } = require('./controller/trackRecordController');
 const { getAllProducts, getProductById, addNewProduct, deleteProductById, updateProductById } = require('./controller/productController');
 const { getAllContainers, getContainerById, addNewContainer, deleteContainerById, updateContainerById } = require('./controller/containerController');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 3001;
 
 
 app.use(bodyParser.json())
+app.use(cors({
+    origin: '*'
+}));
 
 app.listen(PORT, () => console.log(`Server is running on: http://localhost:${PORT}`));
 

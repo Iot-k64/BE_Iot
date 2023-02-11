@@ -17,7 +17,7 @@ const deleteContainerById = async (req, res) => {
   return res.json(data);
 }
 const updateContainerById = async (req, res) => {
-  const data = await ContainerModel.findByIdAndUpdate(req.body.id, req.body.data);
+  const data = await ContainerModel.findByIdAndUpdate(req.body._id, req.body, { new: true });
   return res.json(data);
 }
 
