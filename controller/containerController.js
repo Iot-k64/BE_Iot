@@ -1,7 +1,7 @@
 const { ContainerModel } = require("../models/container");
 
 const getAllContainers = async (req, res) => {
-  const data = await ContainerModel.find();
+  const data = await ContainerModel.find(req.body).populate("product").exec();
   return res.json(data);
 }
 const getContainerById = async (req, res) => {

@@ -14,7 +14,7 @@ var trackRecordSchema = new Schema({
     type: String,
     required: true
   }
-})
+}, { timestamps: true });
 
 const TrackRecordModel = mongoose.model('TrackRecord', trackRecordSchema);
 

@@ -23,8 +23,17 @@ var containerSchema = new Schema({
     required: true
   },
   position: {
-    type: Number,
+    type: String,
     require: true,
+  },
+  status: {
+    type: Number,
+    default: 1,
+    required: true
+  },
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product'
   }
 })
 

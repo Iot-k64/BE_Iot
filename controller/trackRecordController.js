@@ -1,7 +1,7 @@
 const { TrackRecordModel } = require("../models/trackRecord");
 
 const getAllTrackRecords = async (req, res) => {
-  const data = await TrackRecordModel.find();
+  const data = await TrackRecordModel.find(req.body).sort({createdAt: -1}).limit(10);
   return res.json(data);
 }
 const getTrackRecordById = async (req, res) => {

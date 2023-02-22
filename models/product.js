@@ -13,7 +13,16 @@ var productSchema = new Schema({
   standardHumi: {
     type: Number,
     required: true
+  }, 
+  maxDeviationTemp: {
+    type: Number,
+    require: true
+  },
+  maxDeviationHumi: {
+    type: Number,
+    require: true
   }
+
 })
 
 const ProductModel = mongoose.model('Product', productSchema);
