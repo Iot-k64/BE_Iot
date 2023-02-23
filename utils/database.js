@@ -3,10 +3,12 @@ const { TrackRecordModel } = require('../models/trackRecord');
 
 
 const dbName = 'testxxx';
-const DB_URI = `mongodb://localhost:27017/${dbName}`
+const xxx = process.env.DB_URL || "";
+const DB_URI = `${xxx}/${dbName}`
 
 const connectDB = mongoose.connect(DB_URI, (error) => {
 	if (error) {
+		console.log(DB_URI)
 		console.log("Error " + error);
 	} else {
 		console.log("Connected to Database")
