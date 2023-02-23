@@ -2,17 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build and push image') {
             steps {
-                echo 'Hello World'
-            }
-        }
-        stage('Build image') {
-            dockerImage = docker.build("tuanminh009/iot-be:v1")
-        }
-        stage('push image') {
-            withDockerRegistry(credentialsId: 'tuanminh009') {
-                dockerImage.push()
+                script {
+                    def dockerImage = docker.build("tuanminh009/iot-be:v1")
+                    withDockerRegistry(credentialsId: 'tuanminh009') {
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
