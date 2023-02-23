@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'docker:latest' }
-    }
+    agent docker
 
     stages {
         stage('Build and push image') {
