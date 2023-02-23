@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build and push image') {
             steps {
-                script {
-                   sh 'docker build -t tuanminh009/iot-be:v1 .'
+                withDockerRegistry(credentialsId: 'tuanminh009', url: 'https://index.docker.io/v1/') {
+                    sh 'docker build -t tuanminh009/iot-be:v1 .'
                 }
             }
         }
