@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { TrackRecordModel } = require('../models/trackRecord');
+const clientMQTT = require('./mqtt');
 
 
 const dbName = 'testxxx';
@@ -27,7 +28,41 @@ const connectDB = mongoose.connect(DB_URI, (error) => {
 	// 		{containerId: "63ef5e033dd404e990e8454c", humidity: 26, temperature: 30},
 	// 		{containerId: "63ef5e033dd404e990e8454c", humidity: 23, temperature: 25},
 	// ])
+		// clientMQTT.on('connect', function () {
+		// 	clientMQTT.subscribe('dataxxx', function (err) {
+		// 	if (!err) {
+		// 		clientMQTT.publish('dataxxx', JSON.stringify({ 
+		// 			containerX: {
+		// 				humidity: Math.round(Math.random() * 100),
+		// 				temperature: Math.round(Math.random() * 100),
+		// 				containerId: '63ef5e033dd404e990e8454c'
+		// 			},
+		// 			containerY: {
+		// 				humidity: Math.round(Math.random() * 100),
+		// 				temperature: Math.round(Math.random() * 100),
+		// 				containerId: '63ef5e033dd404e990e8454c'
+		// 			},
+		// 			containerZ: {
+		// 				humidity: Math.round(Math.random() * 100),
+		// 				temperature: Math.round(Math.random() * 100),
+		// 				containerId: '63ef5e033dd404e990e8454c'
+		// 			},
+		// 		}))
+		// 	}
+		// 	})
+		// })
+		// clientMQTT.on('message', function (topic, message) {
+		// 	// message is Buffer
+		// 	const data = JSON.parse(message.toString());
+		// 		TrackRecordModel.insertMany([
+		// 			data.containerX,
+		// 			data.containerY,
+		// 			data.containerZ
+		// 		])
+		// 	clientMQTT.end()
+		//   })
 	}
+	
 });
 
 module.exports = connectDB;
