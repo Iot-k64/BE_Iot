@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { TrackRecordModel } = require('../models/trackRecord');
 const clientMQTT = require('./mqtt');
+const { ContainerModel } = require('../models/container');
+const { sendNotif } = require('./send_msg');
 
 
 const dbName = 'testxxx';
@@ -29,41 +31,46 @@ const connectDB = mongoose.connect(DB_URI, (error) => {
 		// 		{containerId: "63ef5e033dd404e990e8454c", humidity: 23, temperature: 25},
 		// ])
 		clientMQTT.on('connect', function () {
-			clientMQTT.subscribe('64059a445ec5f5d21fa9a2f7', function (err) {
+			clientMQTT.subscribe(['63ef5e033dd404e990e8454c', '63ef5e133dd404e990e84551'], function (err) {
 				console.log("subscribe success")
-				// if (!err) {
-				// 	clientMQTT.publish('6404a6b8e4d496ec4a125bb5', JSON.stringify({ 
-				// 		containerX: {
-				// 			humidity: Math.round(Math.random() * 100),
-				// 			temperature: Math.round(Math.random() * 100),
-				// 			containerId: '63ef5e033dd404e990e8454c'
-				// 		},
-				// 		containerY: {
-				// 			humidity: Math.round(Math.random() * 100),
-				// 			temperature: Math.round(Math.random() * 100),
-				// 			containerId: '63ef5e033dd404e990e8454c'
-				// 		},
-				// 		containerZ: {
-				// 			humidity: Math.round(Math.random() * 100),
-				// 			temperature: Math.round(Math.random() * 100),
-				// 			containerId: '63ef5e033dd404e990e8454c'
-				// 		},
-				// 	}))
-				// }
+				if (!err) {
+					// setInterval(() => {
+					// 	clientMQTT.publish('63ef5e033dd404e990e8454c', '25,45')
+					// 	clientMQTT.publish('63ef5e133dd404e990e84551', '30, 70')
+					// 	// clientMQTT.publish('63ef5e033dd404e990e8454c', '25,45')
+					// 	// clientMQTT.publish('63ef5e033dd404e990e8454c', '25,45')
+					// }, 2000)
+
+				}
 			})
 		})
 		clientMQTT.on('message', function (topic, message) {
 			// message is Buffer
-			console.log(topic);
-
 			const data = message.toString().split(',');
-			TrackRecordModel.insertMany([
-				{ containerId: '64059a445ec5f5d21fa9a2f7', humidity: parseFloat(data[1]) + Math.round(Math.random() * 10), temperature: parseFloat(data[0]) + Math.round(Math.random() * 10) }
-			])
-			// clientMQTT.end()
+			const record = {containerId: topic, humidity: parseFloat(data[1]) + Math.round(Math.random() * 10), temperature: parseFloat(data[0]) + Math.round(Math.random() * 10)}
+		
+			saveTrackRecord(record)
 		})
+
 	}
 
 });
+
+const saveTrackRecord = async (data) => {
+	const containerInfo = await ContainerModel.findById(data.containerId).populate('product');
+	if((data.humidity - containerInfo.product.standardHumi > containerInfo.product.maxDeviationHumi) || (data.temperature - containerInfo.product.standardTemp > containerInfo.product.maxDeviationTemp)) {
+		await ContainerModel.findByIdAndUpdate(data.containerId, { status: 3 })
+		sendNotif(`WARNING: Điều chỉnh lại các thông số của contaner ${containerInfo.containerNo}!!!`);
+	} else {
+		await ContainerModel.findByIdAndUpdate(data.containerId, { status: 2 })
+	}
+		await TrackRecordModel.insertMany([
+				data
+			])
+}
+
+// ACC Sid= AC2e24694f2aed35b260a6de54d85fe7d2
+// auth token = 40339373e2704cc3dac69d7e734e2cd6
+// phone = +15676011629
 
 module.exports = connectDB;
