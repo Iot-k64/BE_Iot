@@ -18,7 +18,7 @@ pipeline {
         }
         stage('change version in config k8s') {
 		steps {
-		 withCredentials([gitUsernamePassword(credentialsId: 'github_v2', gitToolName: 'Default')]) {
+		 withCredentials([gitUsernamePassword(credentialsId: 'git_token', gitToolName: 'Default')]) {
                 sh """#!/bin/bash
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					     git config --global user.email "tuanminh20194334@gmail.com"
