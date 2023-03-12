@@ -21,6 +21,8 @@ pipeline {
 		 withCredentials([gitUsernamePassword(credentialsId: 'github_v2', gitToolName: 'Default')]) {
                 sh """#!/bin/bash
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
+					     git config --global user.email "tuanminh20194334@gmail.com"
+  						git config --global user.name "tuanminh"
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}
 					   cd ${helmRepo}
                      			   sed -i 's|image: .*|image: tuanminh009/iot-be:${BUILD_NUMBER}|' dev/server-deployment.yaml
