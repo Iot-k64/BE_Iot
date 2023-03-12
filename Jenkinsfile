@@ -23,7 +23,7 @@ pipeline {
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}
 					   cd ${helmRepo}
-                     			   sed -i 's|\(image: *\)[^ ]*|\1tuanminh009:iot-be:"${version}"|' dev/server-deployment.yaml
+                     			   sed -i 's|\(image: *\)[^ ]*|\1tuanminh009/iot-be:"${version}"|' dev/server-deployment.yaml
 					   git add . ; git commit -m "Update to version ${version}";git push origin main
 					   cd ..
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
