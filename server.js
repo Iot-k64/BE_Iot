@@ -19,7 +19,7 @@ app.use(cors({
 app.listen(PORT, () => console.log(`Server is running on: http://localhost:${PORT}`));
 
 app.get('/', (req, res) => {
-    res.send(`Listening on ${PORT}`);
+    res.send(`Listening on ${PORT} xxxxxxxxxxxxxx`);
 })
 
 app.post('/get-all-users', getAllUsers);
