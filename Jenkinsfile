@@ -7,7 +7,6 @@ pipeline {
 
     stages {
         stage('Build and push image') {
-            echo 'Starting...'
             steps {
                 withDockerRegistry(credentialsId: 'docker_hub', url: 'https://index.docker.io/v1/') {
                     sh "docker build -t tuanminh009/iot-be:${BUILD_NUMBER} ."
@@ -18,7 +17,8 @@ pipeline {
             }
         }
         stage('change version in config k8s') {
-            withCredentials([gitUsernamePassword(credentialsId: 'github_v2', gitToolName: 'Default')]) {
+		steps {
+		 withCredentials([gitUsernamePassword(credentialsId: 'github_v2', gitToolName: 'Default')]) {
                 sh """#!/bin/bash
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}
@@ -29,6 +29,8 @@ pipeline {
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   """	
             }
+		}
+           
             		
         }
     }
