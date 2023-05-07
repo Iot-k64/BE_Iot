@@ -1,8 +1,6 @@
 pipeline {
   agent any
   stages {
-      nodejs('node') {
-          // some block
         stage('SCM') {
           checkout scm
         }
@@ -13,5 +11,5 @@ pipeline {
           }
         }
       }
-    }
+    
 }
